@@ -16,5 +16,15 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run
       run: cargo run --verbose
+    - name: Commit files  # transfer the new html files back into the repository
+      run: |
+        git config --local user.name  ${{ github.actor }}
+        git add .
+        git commit -m "Updating documentation"
+    - name: Push changes  # push the output folder to your repo
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
     - name: Send message
       run: curl -X POST https://gymskilltree.com/reload_all
